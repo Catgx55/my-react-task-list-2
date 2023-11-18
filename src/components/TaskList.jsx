@@ -1,63 +1,26 @@
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
 import TaskForm from "./TaskForm";
 import Task from "./Task";
+import { useTodoApp } from "../hooks/useTodoApp";
 
 const TaskList = () => {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, addNewTasks, editTasks, deleteTasks, completedTasks] = useTodoApp();
 
-    const addTask = task => {
-
-        if(!task.text || /^\s*$/.test(task.text)){
-            return;
-        };
-
-        const newTask = [task, ...tasks];
-
-        setTasks(newTask);
-
-        localStorage.setItem("task", JSON.stringify(newTask));
+    const addTask = (task) => {
+        addNewTasks(task);
     };
 
     const updateTask = (taskId, newValue) => {
-        if(!newValue.text || /^\s*$/.test(newValue.text)){
-            return;
-        };
-
-        setTasks(prev => prev.map(item => (item.id === taskId ? newValue : item)));
+        editTasks(taskId, newValue);
     };
 
-    const removeTask = id => {
-        const removeArr = [...tasks].filter(task => task.id !== id);
-
-        setTasks(removeArr);
-
-        localStorage.setItem("task", JSON.stringify(removeArr));
-    }
-
-    const completeTask = id => {
-        const updateTasks = tasks.map(task => {
-            if(task.id === id){
-                task.isComplete = !task.isComplete;
-            }
-            return task;
-        });
-        setTasks(updateTasks);
-
-        localStorage.setItem("task", JSON.stringify(updateTasks));
+    const removeTask = (id) => {
+        deleteTasks(id);
     };
 
-    useEffect(() => {
-        const localStorageData = localStorage.getItem("task");
-        if(localStorageData){
-            try{
-                const storedTasks = JSON.parse(localStorageData);
-
-                setTasks(storedTasks);
-            }catch(err){
-                console.log("Error parsing tasks items from localStorage")
-            }
-        }
-    }, []);
+    const completeTask = (id) => {
+        completedTasks(id);
+    };
 
     return(
         <div>

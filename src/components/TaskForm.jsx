@@ -13,7 +13,6 @@ const TaskForm = (prosp) => {
         setInput(e.target.value);
     };
 
-    //funcion para evitar la recarga de la pagina
     const handleSubmit = e => {
         e.preventDefault();
 
@@ -23,7 +22,7 @@ const TaskForm = (prosp) => {
         });
         setInput('');
     };
-//Formulario de ingreso de tareas
+    
     return(
         <form className="task-list" onSubmit={handleSubmit}>
             {prosp.edit ? (
@@ -34,7 +33,7 @@ const TaskForm = (prosp) => {
             ) : (
                 <>
                 <input placeholder="Agregar tarea" value={input} onChange={handleChange} name="text" className="todo-input" ref={inputRef} />
-                <button onClick={handleSubmit} className="todo-button">Agregar Tarea</button>
+                <button onClick={handleSubmit} className="todo-button">+</button>
                 </>
             )}
         </form>
